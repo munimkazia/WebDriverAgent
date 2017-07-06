@@ -8,6 +8,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "mongoose.h"
 
 @class RouteResponse, RoutingHTTPServer, FBExceptionHandler;
 

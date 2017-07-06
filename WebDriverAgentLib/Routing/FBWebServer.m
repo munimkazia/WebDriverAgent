@@ -23,9 +23,12 @@
 #import "FBLogger.h"
 
 #import "XCUIDevice+FBHelpers.h"
+#import "XCAXClient_iOS.h"
 
 static NSString *const FBServerURLBeginMarker = @"ServerURLHere->";
 static NSString *const FBServerURLEndMarker = @"<-ServerURLHere";
+struct mg_mgr mgr;
+const char *tcp_port = "8200"
 
 @interface FBHTTPConnection : RoutingConnection
 @end
@@ -68,7 +71,41 @@ static NSString *const FBServerURLEndMarker = @"<-ServerURLHere";
   [FBLogger logFmt:@"Built at %s %s", __DATE__, __TIME__];
   self.exceptionHandler = [FBExceptionHandler new];
   [self startHTTPServer];
+  dispatch_async(dispatch_get_main_queue(),
+  ^{
+    [self startTCPServer];    
+  });
+  
   [[NSRunLoop mainRunLoop] run];
+}
+
+static void ev_handler(struct mg_connection *nc, int ev, void *p) {
+    struct mbuf *io = &nc->recv_mbuf;
+    (void) p;
+
+    switch (ev) {
+      case MG_EV_RECV:
+      NSData *screenshot = [[XCAXClient_iOS sharedClient] screenshotData];
+      char start[1] = "b";
+      mg_send(nc, start, 1);
+      unsigned long imgdata_size = screenshot.length;
+      char *imageSizeBuf = (char*) &imgdata_size;
+      mg_send(nc,imageSizeBuf, sizeof(imgdata_size));
+      mg_send(nc, screenshot, screenshot.length);   // Echo message back
+      mbuf_remove(io, io->len);       // Discard message from recv buffer
+      break;
+    }
+}
+
+
+- (void)startTCPServer
+{
+  mg_mgr_init(&mgr, NULL);
+  mg_bind(&mgr, tcp_port, ev_handler);
+  for (;;) {
+    mg_mgr_poll(&mgr, 1000);
+  }
+  mg_mgr_free(&mgr);
 }
 
 - (void)startHTTPServer
