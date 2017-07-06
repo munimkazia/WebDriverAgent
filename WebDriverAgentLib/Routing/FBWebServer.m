@@ -25,10 +25,24 @@
 #import "XCUIDevice+FBHelpers.h"
 #import "XCAXClient_iOS.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <unistd.h>
+#define BUFFER_SIZE 1024
+
 static NSString *const FBServerURLBeginMarker = @"ServerURLHere->";
 static NSString *const FBServerURLEndMarker = @"<-ServerURLHere";
-struct mg_mgr mgr;
-const char *tcp_port = "8200";
+// struct mg_mgr mgr;
+// const char *tcp_port = "8200";
+
+int tcp_port = 8200;
+int server_fd, client_fd, tcp_err;
+struct sockaddr_in server, client;
+char buf[BUFFER_SIZE];
+
 
 @interface FBHTTPConnection : RoutingConnection
 @end
@@ -73,34 +87,68 @@ const char *tcp_port = "8200";
   [self startHTTPServer];
   dispatch_async(dispatch_get_main_queue(),
   ^{
-    mg_mgr_init(&mgr, NULL);
-    mg_bind(&mgr, tcp_port, ev_handler);
-    while (true) {
-      mg_mgr_poll(&mgr, 1000);
-    }
+    // mg_mgr_init(&mgr, NULL);
+    // mg_bind(&mgr, tcp_port, ev_handler);
+    // while (true) {
+    //   mg_mgr_poll(&mgr, 1000);
+    // }
     // mg_mgr_free(&mgr);
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    // if (server_fd < 0) on_error("Could not create socket\n");
+
+    server.sin_family = AF_INET;
+    server.sin_port = htons(tcp_port);
+    server.sin_addr.s_addr = htonl(INADDR_ANY);
+    int opt_val = 1;
+    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt_val, sizeof opt_val);
+
+    tcp_err = bind(server_fd, (struct sockaddr *) &server, sizeof(server));
+    // if (err < 0) on_error("Could not bind socket\n");
+
+    tcp_err = listen(server_fd, 128);
+    NSData *screenshot;
+    // if (err < 0) on_error("Could not listen on socket\n");
+    while (1) {
+    socklen_t client_len = sizeof(client);
+    client_fd = accept(server_fd, (struct sockaddr *) &client, &client_len);
+
+    // if (client_fd < 0) on_error("Could not establish new connection\n");
+
+    while (1) {
+      ssize_t read = recv(client_fd, buf, BUFFER_SIZE, 0);
+
+      if (!read) break; // done reading
+      // if (read < 0) on_error("Client read failed\n");
+        screenshot = [[XCAXClient_iOS sharedClient] screenshotData];
+        char start[1] = "b";
+        send(client_fd, start, 1, 0);
+        unsigned long imgdata_size = screenshot.length;
+        NSLog(@"image size %lu", imgdata_size);
+        char *imageSizeBuf = (char*) &imgdata_size;
+        send(client_fd,imageSizeBuf, sizeof(imgdata_size),0);
+        send(client_fd, screenshot.bytes, (int)screenshot.length, 0);   // Echo message back
+
+      // send(client_fd, buf, read, 0);
+      // if (err < 0) on_error("Client write failed\n");
+    }
+  }
+
+
   });
   
   [[NSRunLoop mainRunLoop] run];
 }
 
-static void ev_handler(struct mg_connection *nc, int ev, void *p) {
-    struct mbuf *io = &nc->recv_mbuf;
-    (void) p;
-    NSData *screenshot;
-    switch (ev) {
-      case MG_EV_RECV:
-        screenshot = [[XCAXClient_iOS sharedClient] screenshotData];
-        char start[1] = "b";
-        mg_send(nc, start, 1);
-        unsigned long imgdata_size = screenshot.length;
-        char *imageSizeBuf = (char*) &imgdata_size;
-        mg_send(nc,imageSizeBuf, sizeof(imgdata_size));
-        mg_send(nc, screenshot.bytes, (int)screenshot.length);   // Echo message back
-        mbuf_remove(io, io->len);       // Discard message from recv buffer
-      break;
-    }
-}
+// static void ev_handler(struct mg_connection *nc, int ev, void *p) {
+//     struct mbuf *io = &nc->recv_mbuf;
+//     (void) p;
+//     NSData *screenshot;
+//     switch (ev) {
+//       case MG_EV_RECV:
+//         mbuf_remove(io, io->len);       // Discard message from recv buffer
+//       break;
+//     }
+// }
 
 
 - (void)startHTTPServer

@@ -37,8 +37,6 @@
 		71B49EC71ED1A58100D51AD6 /* XCUIElement+FBUID.h in Headers */ = {isa = PBXBuildFile; fileRef = 71B49EC51ED1A58100D51AD6 /* XCUIElement+FBUID.h */; };
 		71B49EC81ED1A58100D51AD6 /* XCUIElement+FBUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 71B49EC61ED1A58100D51AD6 /* XCUIElement+FBUID.m */; };
 		71E95ADF1DC101BA002D0364 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7174AF031D9D39AF008C8AD5 /* libxml2.tbd */; };
-		7E6A70211F0E46CF00651DCD /* mongoose.c in Sources */ = {isa = PBXBuildFile; fileRef = 7E6A701F1F0E46CF00651DCD /* mongoose.c */; settings = {COMPILER_FLAGS = "-Wno-padded"; }; };
-		7E6A70221F0E46CF00651DCD /* mongoose.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E6A70201F0E46CF00651DCD /* mongoose.h */; };
 		AD35D01A1CF1418E00870A75 /* RoutingHTTPServer.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = AD42DD2B1CF1238500806E5D /* RoutingHTTPServer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AD35D0641CF1C2C300870A75 /* RoutingHTTPServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD42DD2B1CF1238500806E5D /* RoutingHTTPServer.framework */; };
 		AD35D06C1CF1C35500870A75 /* WebDriverAgentLib.framework in Copy frameworks */ = {isa = PBXBuildFile; fileRef = EE158A991CBD452B00A3E3F0 /* WebDriverAgentLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -427,8 +425,6 @@
 		71B49EC51ED1A58100D51AD6 /* XCUIElement+FBUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XCUIElement+FBUID.h"; sourceTree = "<group>"; };
 		71B49EC61ED1A58100D51AD6 /* XCUIElement+FBUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "XCUIElement+FBUID.m"; sourceTree = "<group>"; };
 		71E504941DF59BAD0020C32A /* XCUIElementAttributesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XCUIElementAttributesTests.m; sourceTree = "<group>"; };
-		7E6A701F1F0E46CF00651DCD /* mongoose.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mongoose.c; sourceTree = "<group>"; };
-		7E6A70201F0E46CF00651DCD /* mongoose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mongoose.h; sourceTree = "<group>"; };
 		AD42DD2A1CF121E600806E5D /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		AD42DD2B1CF1238500806E5D /* RoutingHTTPServer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RoutingHTTPServer.framework; path = Carthage/Build/iOS/RoutingHTTPServer.framework; sourceTree = "<group>"; };
 		AD6C26921CF2379700F8B5FF /* FBAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBAlert.h; path = WebDriverAgentLib/FBAlert.h; sourceTree = SOURCE_ROOT; };
@@ -989,8 +985,6 @@
 		EE9AB78E1CAEDF0C008C271F /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				7E6A701F1F0E46CF00651DCD /* mongoose.c */,
-				7E6A70201F0E46CF00651DCD /* mongoose.h */,
 				EE9B76A11CF7A43900275851 /* FBConfiguration.h */,
 				EE9B76A21CF7A43900275851 /* FBConfiguration.m */,
 				EE7E27181D06C69F001BEC7B /* FBDebugLogDelegateDecorator.h */,
@@ -1452,7 +1446,6 @@
 				EE9B76A81CF7A43900275851 /* FBLogger.h in Headers */,
 				EE35AD531E3B77D600A02D78 /* XCTestObserver.h in Headers */,
 				EE35AD6F1E3B77D600A02D78 /* XCUIElement.h in Headers */,
-				7E6A70221F0E46CF00651DCD /* mongoose.h in Headers */,
 				EE35AD2F1E3B77D600A02D78 /* XCKeyboardInputSolver.h in Headers */,
 				EE7E271E1D06C69F001BEC7B /* FBXCTestCaseImplementationFailureHoldingProxy.h in Headers */,
 				EE7E271C1D06C69F001BEC7B /* FBDebugLogDelegateDecorator.h in Headers */,
@@ -1620,6 +1613,7 @@
 				TargetAttributes = {
 					EE158A981CBD452B00A3E3F0 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = CL769MBK8C;
 					};
 					EE836C011C0F118600D87246 = {
 						CreatedOnToolsVersion = 7.1.1;
@@ -1633,6 +1627,7 @@
 					};
 					EEF988291C486603005CA669 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = CL769MBK8C;
 					};
 				};
 			};
@@ -1739,7 +1734,6 @@
 				EE158ADF1CBD456F00A3E3F0 /* FBRoute.m in Sources */,
 				EE0D1F621EBCDCF7006A3123 /* NSString+FBVisualLength.m in Sources */,
 				EEE9B4731CD02B88009D2030 /* FBRunLoopSpinner.m in Sources */,
-				7E6A70211F0E46CF00651DCD /* mongoose.c in Sources */,
 				71A7EAFA1E224648001DA4F2 /* FBClassChainQueryParser.m in Sources */,
 				71A224E61DE2F56600844D55 /* NSPredicate+FBFormat.m in Sources */,
 				EEE376441D59F81400ED88DD /* XCUIDevice+FBRotation.m in Sources */,
@@ -2041,10 +2035,11 @@
 			baseConfigurationReference = EEE5CABF1C80361500CBBDD9 /* ProjectSettings.xcconfig */;
 			buildSettings = {
 				CLANG_STATIC_ANALYZER_MODE = deep;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = NO;
+				DEVELOPMENT_TEAM = CL769MBK8C;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -2070,9 +2065,10 @@
 			baseConfigurationReference = EEE5CABF1C80361500CBBDD9 /* ProjectSettings.xcconfig */;
 			buildSettings = {
 				CLANG_STATIC_ANALYZER_MODE = deep;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = NO;
+				DEVELOPMENT_TEAM = CL769MBK8C;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -2238,6 +2234,7 @@
 			buildSettings = {
 				CLANG_STATIC_ANALYZER_MODE = deep;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = CL769MBK8C;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -2260,6 +2257,7 @@
 			baseConfigurationReference = EEE5CABF1C80361500CBBDD9 /* ProjectSettings.xcconfig */;
 			buildSettings = {
 				CLANG_STATIC_ANALYZER_MODE = deep;
+				DEVELOPMENT_TEAM = CL769MBK8C;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
