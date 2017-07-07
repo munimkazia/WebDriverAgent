@@ -119,15 +119,22 @@ char buf[BUFFER_SIZE];
 
       if (!read) break; // done reading
       // if (read < 0) on_error("Client read failed\n");
-        screenshot = [[XCAXClient_iOS sharedClient] screenshotData];
-        char start[1] = "b";
-        send(client_fd, start, 1, 0);
-        unsigned long imgdata_size = screenshot.length;
-        NSLog(@"image size %lu", imgdata_size);
-        char *imageSizeBuf = (char*) &imgdata_size;
-        send(client_fd,imageSizeBuf, sizeof(imgdata_size),0);
-        send(client_fd, screenshot.bytes, (int)screenshot.length, 0);   // Echo message back
+      NSDate *methodStart = [NSDate date];
+      screenshot = [[XCAXClient_iOS sharedClient] screenshotData];
+      NSDate *methodFinish = [NSDate date];
+      NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
+      NSLog(@"Screenshot time = %f", executionTime);
 
+      char start[1] = "b";
+      send(client_fd, start, 1, 0);
+      unsigned long imgdata_size = screenshot.length;
+      NSLog(@"image size %lu", imgdata_size);
+      char *imageSizeBuf = (char*) &imgdata_size;
+      send(client_fd,imageSizeBuf, sizeof(imgdata_size),0);
+      send(client_fd, screenshot.bytes, (int)screenshot.length, 0);   // Echo message back
+      NSDate *methodFinish2 = [NSDate date];
+      NSTimeInterval executionTime2 = [methodFinish2 timeIntervalSinceDate:methodFinish];
+      NSLog(@"TCP Send time = %f", executionTime2);
       // send(client_fd, buf, read, 0);
       // if (err < 0) on_error("Client write failed\n");
     }
